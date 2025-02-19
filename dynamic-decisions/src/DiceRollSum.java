@@ -1,6 +1,6 @@
 public class DiceRollSum {
     /**
-     * You have a dice with k faces. Given a target sum n,
+     * You have a dice with k faces. Given a target sum of n,
      * how many ways can you roll the dice to sum to n?
      */
     public static int countWays(int n, int k) {

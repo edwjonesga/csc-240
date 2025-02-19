@@ -1,4 +1,5 @@
 public class ClimbingStairs {
+    
     /**
      * Given a staircase with n steps, you can take either 1 step or 2 steps at a time.
      * Determine how many distinct ways you can reach the top.
