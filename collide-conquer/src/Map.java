@@ -1,3 +1,5 @@
+import java.util.Set;
+
 public interface Map<K, V> {
     /**
      * Inserts a key-value pair into the map.
@@ -55,5 +57,5 @@ public interface Map<K, V> {
      * Returns the underlying array of entries.
      * @return An array of Map.Entry objects representing the key-value pairs
      */
-    Entry<K, V>[] toArray();
+    Object[] toArray(); 
 }

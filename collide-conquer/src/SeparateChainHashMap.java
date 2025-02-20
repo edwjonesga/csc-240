@@ -1,3 +1,4 @@
+import java.util.Set;
 public class SeparateChainHashMap<K, V> implements Map<K, V> {
       
   /**
@@ -37,5 +38,5 @@ public class SeparateChainHashMap<K, V> implements Map<K, V> {
     public void clear() {}
 
     @Override
-    public Entry<K, V>[] toArray() { return null; }
+    public Object[] toArray() { return null; }
 }

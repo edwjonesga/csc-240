@@ -1,7 +1,6 @@
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.util.Map.Entry;
 
 public class MainTest {
     private SeparateChainHashMap<String, Integer> separateChainMap;
@@ -88,8 +87,8 @@ public class MainTest {
 
     @Test
     void testToArrayResizing() {
-        Entry<String, Integer>[] beforeSeparate = separateChainMap.toArray();
-        Entry<String, Integer>[] beforeAddress = addressProbeMap.toArray();
+        Object[] beforeSeparate = separateChainMap.toArray();
+        Object[] beforeAddress = addressProbeMap.toArray();
 
         for (int i = 0; i < 3; i++) {  // Load factor of 0.75 * 5 = 3.75, so resizing should happen when adding the 4th element
             separateChainMap.put("key" + i, i);
@@ -99,8 +98,8 @@ public class MainTest {
         separateChainMap.put("trigger", 100);
         addressProbeMap.put("trigger", 100);
 
-        Entry<String, Integer>[] afterSeparate = separateChainMap.toArray();
-        Entry<String, Integer>[] afterAddress = addressProbeMap.toArray();
+        Object[] afterSeparate = separateChainMap.toArray();
+        Object[] afterAddress = addressProbeMap.toArray();
 
         assertTrue(afterSeparate.length >= beforeSeparate.length * 2);
         assertTrue(afterAddress.length >= beforeAddress.length * 2);

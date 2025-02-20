@@ -1,3 +1,5 @@
+import java.util.Set;
+
 public class AddressProbeHashMap<K, V> implements Map<K, V> {
   /**
    * TODO: Implement a hash map using open addressing with linear probing for collision resolution.
@@ -38,5 +40,5 @@ public class AddressProbeHashMap<K, V> implements Map<K, V> {
     public void clear() {}
 
     @Override
-    public Entry<K, V>[] toArray() { return null; }
+    public Object[] toArray() { return null; }
 }
