@@ -8,7 +8,7 @@ LABEL maintainer="edwjones@ccu.edu"
 RUN mkdir -p /workspace /bin /opt/junit
 
 # Install required utilities: zip, unzip, wget, curl, and Git
-RUN apt-get update && apt-get install -y zip unzip wget curl git
+RUN apt-get update && apt-get install -y zip unzip wget curl git jq
 
 # Set the working directory inside the container
 WORKDIR /workspace
@@ -88,10 +88,10 @@ RUN echo '#!/bin/bash' > /bin/refresh-assignment-files.sh && \
     echo 'temp_dir=$(mktemp -d)' >> /bin/refresh-assignment-files.sh && \
     echo 'git clone --depth=1 https://github.com/edwjonesga/$repo.git $temp_dir > /dev/null 2>&1' >> /bin/refresh-assignment-files.sh && \
     echo 'assignments=$(find $temp_dir -maxdepth 1 -type d -not -name ".*" -exec basename {} \;)' >> /bin/refresh-assignment-files.sh && \
-    echo 'rm -rf $temp_dir' >> /bin/refresh-assignment-files.sh && \
     echo '' >> /bin/refresh-assignment-files.sh && \
     echo 'if [ -z "$assignments" ]; then' >> /bin/refresh-assignment-files.sh && \
     echo '  echo "No assignments found."' >> /bin/refresh-assignment-files.sh && \
+    echo '  rm -rf $temp_dir' >> /bin/refresh-assignment-files.sh && \
     echo '  exit 1' >> /bin/refresh-assignment-files.sh && \
     echo 'fi' >> /bin/refresh-assignment-files.sh && \
     echo '' >> /bin/refresh-assignment-files.sh && \
@@ -105,9 +105,22 @@ RUN echo '#!/bin/bash' > /bin/refresh-assignment-files.sh && \
     echo '  fi' >> /bin/refresh-assignment-files.sh && \
     echo 'done' >> /bin/refresh-assignment-files.sh && \
     echo '' >> /bin/refresh-assignment-files.sh && \
-    echo 'echo "Cloning repository $repo into /workspace/$assignment..."' >> /bin/refresh-assignment-files.sh && \
-    echo 'git clone https://github.com/edwjonesga/$repo.git /workspace/$assignment' >> /bin/refresh-assignment-files.sh && \
-    echo 'echo "Repository cloned successfully!"' >> /bin/refresh-assignment-files.sh && \
+    echo 'echo "Would you like to (R)eplace existing files or (K)eep them in a separate directory? (Default: Keep)"' >> /bin/refresh-assignment-files.sh && \
+    echo 'read -r user_choice' >> /bin/refresh-assignment-files.sh && \
+    echo 'user_choice=${user_choice,,}' >> /bin/refresh-assignment-files.sh && \
+    echo '' >> /bin/refresh-assignment-files.sh && \
+    echo 'if [[ "$user_choice" == "r" ]]; then' >> /bin/refresh-assignment-files.sh && \
+    echo '  echo "Replacing existing files... with $temp_dir"' >> /bin/refresh-assignment-files.sh && \
+    echo '  cp -r $temp_dir/$assignment/* /workspace/' >> /bin/refresh-assignment-files.sh && \
+    echo '  echo "Files copied to /workspace/."' >> /bin/refresh-assignment-files.sh && \
+    echo 'else' >> /bin/refresh-assignment-files.sh && \
+    echo '  echo "Keeping files in a separate directory."' >> /bin/refresh-assignment-files.sh && \
+    echo '  mv $temp_dir /workspace/$assignment' >> /bin/refresh-assignment-files.sh && \
+    echo '  echo "Files saved to /workspace/$assignment."' >> /bin/refresh-assignment-files.sh && \
+    echo 'fi' >> /bin/refresh-assignment-files.sh && \
+    echo '' >> /bin/refresh-assignment-files.sh && \
+    echo 'rm -rf $temp_dir' >> /bin/refresh-assignment-files.sh && \
+    echo 'echo "Operation completed!"' >> /bin/refresh-assignment-files.sh && \
     chmod +x /bin/refresh-assignment-files.sh
 
 # Add bin directory to PATH
